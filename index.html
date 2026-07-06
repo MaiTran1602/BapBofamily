@@ -52,14 +52,34 @@ background:#1d4ed8;
 
 <p>Chọn lớp học</p>
 
-<button>Lớp 1</button>
-<button>Lớp 2</button>
-<button>Lớp 3</button>
-<button>Lớp 4</button>
-<button>Lớp 5</button>
+<button onclick="chonLop(1)">Lớp 1</button>
+<button onclick="chonLop(2)">Lớp 2</button>
+<button onclick="chonLop(3)">Lớp 3</button>
+<button onclick="chonLop(4)">Lớp 4</button>
+<button onclick="chonLop(5)">Lớp 5</button>
+
+<div id="monhoc"></div>
 
 </div>
 
-</body>
+<script>
+
+function chonLop(lop){
+
+document.getElementById("monhoc").innerHTML=`
+
+<h3>Chọn môn học</h3>
+
+<button>Toán</button>
+
+<button>Tiếng Việt</button>
+
+<button>Tiếng Anh</button>
+
+`;
+
+}
+
+</script></body>
 
 </html>
