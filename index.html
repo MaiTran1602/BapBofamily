@@ -5,21 +5,20 @@
 <title>Bắp Bơ Family</title>
 
 <style>
-
 body{
 font-family:Arial;
 background:#f4f7fb;
-padding:40px;
+padding:30px;
 text-align:center;
 }
 
 .box{
 background:white;
-max-width:800px;
+max-width:900px;
 margin:auto;
-padding:40px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+padding:35px;
+border-radius:22px;
+box-shadow:0 5px 25px rgba(0,0,0,0.12);
 }
 
 button{
@@ -37,8 +36,24 @@ button:hover{
 background:#1d4ed8;
 }
 
-</style>
+.question{
+font-size:24px;
+font-weight:bold;
+margin-top:25px;
+}
 
+.result{
+font-size:26px;
+font-weight:bold;
+color:#16a34a;
+}
+
+.small{
+color:#555;
+font-size:16px;
+}
+
+</style>
 </head>
 
 <body>
@@ -46,9 +61,9 @@ background:#1d4ed8;
 <div class="box">
 
 <h1>📚 Bắp Bơ Family</h1>
-
 <h2>Cùng 2 bé vui học mỗi ngày</h2>
 
+<div id="app">
 <p>Chọn lớp học</p>
 
 <button onclick="chonLop(1)">Lớp 1</button>
@@ -56,71 +71,138 @@ background:#1d4ed8;
 <button onclick="chonLop(3)">Lớp 3</button>
 <button onclick="chonLop(4)">Lớp 4</button>
 <button onclick="chonLop(5)">Lớp 5</button>
-
-<div id="monhoc"></div>
+</div>
 
 </div>
 
 <script>
 
+let lopDangChon = 1;
+let monDangChon = "";
+let cauHienTai = 0;
+let diem = 0;
+let boCauHoi = [];
+
+const duLieu = {
+  "Toán": [
+    {cau:"5 + 3 = ?", dapan:["6","7","8","9"], dung:2},
+    {cau:"9 - 4 = ?", dapan:["3","4","5","6"], dung:2},
+    {cau:"6 + 2 = ?", dapan:["7","8","9","10"], dung:1},
+    {cau:"10 - 5 = ?", dapan:["4","5","6","7"], dung:1},
+    {cau:"3 + 4 = ?", dapan:["6","7","8","9"], dung:1}
+  ],
+
+  "Tiếng Việt": [
+    {cau:"Con gì biết gáy ò ó o?", dapan:["Chó","Mèo","Gà","Cá"], dung:2},
+    {cau:"Từ nào chỉ đồ dùng học tập?", dapan:["Bút","Táo","Mèo","Cá"], dung:0},
+    {cau:"Tiếng 'ba' có mấy chữ cái?", dapan:["1","2","3","4"], dung:1},
+    {cau:"Từ nào viết đúng?", dapan:["Con mèo","Con meo","Con mẻo","Con mè"], dung:0},
+    {cau:"Mẹ là người trong gia đình?", dapan:["Đúng","Sai","Không biết","Không phải"], dung:0}
+  ],
+
+  "Tiếng Anh": [
+    {cau:"Apple nghĩa là gì?", dapan:["Táo","Cam","Chuối","Nho"], dung:0},
+    {cau:"Cat nghĩa là gì?", dapan:["Chó","Mèo","Gà","Cá"], dung:1},
+    {cau:"Dog nghĩa là gì?", dapan:["Chó","Mèo","Chim","Vịt"], dung:0},
+    {cau:"One là số mấy?", dapan:["1","2","3","4"], dung:0},
+    {cau:"Blue là màu gì?", dapan:["Đỏ","Xanh dương","Vàng","Đen"], dung:1}
+  ]
+};
+
 function chonLop(lop){
+  lopDangChon = lop;
 
-document.getElementById("monhoc").innerHTML =
-
-"<h3>Chọn môn học lớp "+lop+"</h3>"+
-
-"<button onclick='chonMon()'>Toán</button>"+
-
-"<button>Tiếng Việt</button>"+
-
-"<button>Tiếng Anh</button>"+
-
-"<div id='dethi'></div>";
-
-}
-  function chonMon(){
-
-document.getElementById("dethi").innerHTML =
-
-"<h3>Chọn đề</h3>"+
-
-"<button onclick='lamBai()'>Cộng trừ phạm vi 10</button>"+
-
-"<button>Cộng trừ phạm vi 20</button>"+
-
-"<button>So sánh số</button>";
-
-}
-  function lamBai(){
-
-document.getElementById("dethi").innerHTML = `
-
-<h3>Câu 1</h3>
-
-<p>5 + 3 = ?</p>
-
-<button onclick="dung()">8</button>
-
-<button onclick="sai()">7</button>
-
-<button onclick="sai()">6</button>
-
-<button onclick="sai()">9</button>
-
-`;
-
+  document.getElementById("app").innerHTML = `
+    <h3>Chọn môn học lớp ${lop}</h3>
+    <button onclick="chonMon('Toán')">Toán</button>
+    <button onclick="chonMon('Tiếng Việt')">Tiếng Việt</button>
+    <button onclick="chonMon('Tiếng Anh')">Tiếng Anh</button>
+    <br>
+    <button onclick="veTrangChu()">⬅ Quay lại</button>
+  `;
 }
 
-function dung(){
+function chonMon(mon){
+  monDangChon = mon;
 
-alert("Chính xác 🎉");
-
+  document.getElementById("app").innerHTML = `
+    <h3>Lớp ${lopDangChon} - ${mon}</h3>
+    <p>Chọn đề học</p>
+    <button onclick="batDauLamBai()">Đề cơ bản</button>
+    <button onclick="batDauLamBai()">Ôn tập nhanh</button>
+    <br>
+    <button onclick="chonLop(lopDangChon)">⬅ Quay lại môn học</button>
+  `;
 }
 
-function sai(){
+function batDauLamBai(){
+  boCauHoi = duLieu[monDangChon];
+  cauHienTai = 0;
+  diem = 0;
+  hienCauHoi();
+}
 
-alert("Chưa đúng");
+function hienCauHoi(){
+  let q = boCauHoi[cauHienTai];
 
+  document.getElementById("app").innerHTML = `
+    <h3>${monDangChon} - Lớp ${lopDangChon}</h3>
+    <p class="small">Câu ${cauHienTai + 1}/${boCauHoi.length}</p>
+    <div class="question">${q.cau}</div>
+    <br>
+    <button onclick="kiemTra(0)">${q.dapan[0]}</button>
+    <button onclick="kiemTra(1)">${q.dapan[1]}</button>
+    <button onclick="kiemTra(2)">${q.dapan[2]}</button>
+    <button onclick="kiemTra(3)">${q.dapan[3]}</button>
+  `;
+}
+
+function kiemTra(chon){
+  if(chon === boCauHoi[cauHienTai].dung){
+    diem++;
+  }
+
+  cauHienTai++;
+
+  if(cauHienTai < boCauHoi.length){
+    hienCauHoi();
+  }else{
+    hienKetQua();
+  }
+}
+
+function hienKetQua(){
+  let nhanXet = "";
+
+  if(diem === boCauHoi.length){
+    nhanXet = "Xuất sắc 🎉";
+  }else if(diem >= 3){
+    nhanXet = "Rất tốt, cố gắng thêm nhé ⭐";
+  }else{
+    nhanXet = "Cần luyện tập thêm 💪";
+  }
+
+  localStorage.setItem(monDangChon + "_lop" + lopDangChon, diem + "/" + boCauHoi.length);
+
+  document.getElementById("app").innerHTML = `
+    <h2>Hoàn thành bài học!</h2>
+    <div class="result">Điểm: ${diem}/${boCauHoi.length}</div>
+    <h3>${nhanXet}</h3>
+    <button onclick="batDauLamBai()">Làm lại</button>
+    <button onclick="chonMon(monDangChon)">Chọn đề khác</button>
+    <button onclick="veTrangChu()">Về trang chủ</button>
+  `;
+}
+
+function veTrangChu(){
+  document.getElementById("app").innerHTML = `
+    <p>Chọn lớp học</p>
+    <button onclick="chonLop(1)">Lớp 1</button>
+    <button onclick="chonLop(2)">Lớp 2</button>
+    <button onclick="chonLop(3)">Lớp 3</button>
+    <button onclick="chonLop(4)">Lớp 4</button>
+    <button onclick="chonLop(5)">Lớp 5</button>
+  `;
 }
 
 </script>
