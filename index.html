@@ -66,10 +66,60 @@ background:#1d4ed8;
 function chonLop(lop){
 
 document.getElementById("monhoc").innerHTML =
-"<h3>Chọn môn học lớp " + lop + "</h3>" +
-"<button>Toán</button>" +
-"<button>Tiếng Việt</button>" +
-"<button>Tiếng Anh</button>";
+
+"<h3>Chọn môn học lớp "+lop+"</h3>"+
+
+"<button onclick='chonMon()'>Toán</button>"+
+
+"<button>Tiếng Việt</button>"+
+
+"<button>Tiếng Anh</button>"+
+
+"<div id='dethi'></div>";
+
+}
+  function chonMon(){
+
+document.getElementById("dethi").innerHTML =
+
+"<h3>Chọn đề</h3>"+
+
+"<button onclick='lamBai()'>Cộng trừ phạm vi 10</button>"+
+
+"<button>Cộng trừ phạm vi 20</button>"+
+
+"<button>So sánh số</button>";
+
+}
+  function lamBai(){
+
+document.getElementById("dethi").innerHTML = `
+
+<h3>Câu 1</h3>
+
+<p>5 + 3 = ?</p>
+
+<button onclick="dung()">8</button>
+
+<button onclick="sai()">7</button>
+
+<button onclick="sai()">6</button>
+
+<button onclick="sai()">9</button>
+
+`;
+
+}
+
+function dung(){
+
+alert("Chính xác 🎉");
+
+}
+
+function sai(){
+
+alert("Chưa đúng");
 
 }
 
